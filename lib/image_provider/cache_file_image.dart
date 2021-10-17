@@ -42,17 +42,15 @@ class CacheFileImage {
   }
 
   ///Cache the downloaded image data to the specified file
-  Future saveBytesToFile(String url, Uint8List bytes, bool isProfile) async {
+  Future saveBytesToFile(String url, Uint8List bytes) async {
     String cacheDirPath = await getCachePath();
     String urlMd5 = getUrlMd5(url);
     File file = File('$cacheDirPath$urlMd5');
-    if (!file.existsSync()) {
       file.createSync();
       await file.writeAsBytes(bytes);
       log('-----------------------Writing-------------------------');
       log('${file.lengthSync()/1024}');
       log('${(await file.length())/1024}');
-    }
   }
 
   ///Delete Cache file

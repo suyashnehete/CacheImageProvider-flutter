@@ -89,7 +89,7 @@ class CustomNetworkImage extends ImageProvider<NetworkImage> implements NetworkI
       if(cacheBytes != null) {
         log('reading image');
         log('${cacheBytes.lengthInBytes/1024}');
-        return decode(cacheBytes);
+        return PaintingBinding.instance!.instantiateImageCodec(cacheBytes);
       }
 
       final Uri resolved = Uri.base.resolve(key.url);
@@ -124,13 +124,13 @@ class CustomNetworkImage extends ImageProvider<NetworkImage> implements NetworkI
       bytes = await FlutterImageCompress.compressWithList(
         bytes,
         format: CompressFormat.webp,
-        minHeight: isProfile ? (Media.width * 50).toInt() : (Media.width * 85).toInt(),
-        minWidth: isProfile ? (Media.width * 50).toInt() : (Media.width * 100).toInt(),
+        minHeight: getHeight(isProfile),
+        minWidth: getWidth(isProfile),
       );
 
-      await _cacheFileImage.saveBytesToFile(key.url, bytes, isProfile);
+      await _cacheFileImage.saveBytesToFile(key.url, bytes);
 
-      return decode(bytes);
+      return PaintingBinding.instance!.instantiateImageCodec(bytes,);
     } catch (e) {
       // Depending on where the exception was thrown, the image cache may not
       // have had a chance to track the key in the cache at all.
@@ -160,5 +160,18 @@ class CustomNetworkImage extends ImageProvider<NetworkImage> implements NetworkI
   @override
   String toString() => '${objectRuntimeType(this, 'NetworkImage')}("$url", scale: $scale)';
 
-
+  int getWidth(bool isProfile){
+    if(isProfile) {
+      return Media.profilePhotoSize;
+    }
+    return Media.postPhotoWidth;
+  }
+  
+  int getHeight(bool isProfile){
+    if(isProfile) {
+      return Media.profilePhotoSize;
+    }
+    return Media.postPhotoHeight;
+  }
+  
 }

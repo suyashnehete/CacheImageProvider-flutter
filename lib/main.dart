@@ -40,9 +40,9 @@ class MyApp extends StatelessWidget {
                   }),
             ),
             body: ListView.builder(
-              itemCount: profiles.length,
+              itemCount: 2000,
               itemBuilder: (context, index) {
-                return getPost(context, profiles[index], posts[index]);
+                return getPost(context, profiles[index%profiles.length], posts[index%posts.length]);
               },
             ),
           ),
@@ -105,11 +105,12 @@ class MyApp extends StatelessWidget {
                     },
                     onDoubleTap: () async {},
                     //       child: croppedImage(post.picUri, boxFit),
-                    child: Image(
+                    child: FadeInImage(
                       fit: boxFit,
                       image: CustomNetworkImage(
                         postUrl,
                       ),
+                      placeholder: const AssetImage('images/1.gif'),
                     ),
                   ),
                 ),

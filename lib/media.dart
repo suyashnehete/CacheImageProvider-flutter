@@ -13,7 +13,9 @@ class Media {
   static bool isPortrait = true;
   static bool isMobilePortrait = false;
 
-  static late int cachePhotoSize = 0;
+  static int profilePhotoSize = 0;
+  static int postPhotoWidth = 0;
+  static int postPhotoHeight = 0;
 
   void init(BoxConstraints constraints, Orientation orientation) {
     if (orientation == Orientation.portrait) {
@@ -37,6 +39,8 @@ class Media {
     image = _blockWidth;
     height = _blockHeight;
     width = _blockWidth;
-    cachePhotoSize = (width * 40).toInt();
+    profilePhotoSize = (Media.width * 50).toInt();
+    postPhotoHeight = (Media.width * 85).toInt();
+    postPhotoWidth = (Media.width * 100).toInt();
   }
 }
